@@ -1,4 +1,4 @@
-<view class="weui-tabs">
+<view class="weui-tabs" id="weui-tab">
   <view class="weui-tabs-bar__wrp">
     <scroll-view scroll-x scroll-into-view="item_{{currentView}}" scroll-with-animation="{{animation}}">
       <view class="weui-tabs-bar__content">
@@ -12,8 +12,8 @@
       </view>
     </scroll-view>
   </view>
-  <swiper class="{{swiperClass}}" current="{{activeTab}}" duration="{{duration}}" bindchange="handleSwiperChange">
-    <swiper-item wx:for="{{tabs}}" wx:key="title">
+  <swiper class="{{swiperClass}}" current="{{activeTab}}" duration="{{duration}}" bindchange="handleSwiperChange" style="height:{{swiperHeight}};">
+    <swiper-item wx:for="{{tabs}}" wx:key="title" class="{{swiperItemClass}}">
       <slot name="tab-content-{{index}}"></slot>
     </swiper-item>
   </swiper>
