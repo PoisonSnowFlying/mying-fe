@@ -14,7 +14,6 @@ import "./index.less";
 
 export default function Index() {
   const [tabsSwiperHeight, setTabsSwiperHeight] = useState(200);
-  const [showMap, setShowMap] = useState(false);
   useEffect(() => {
     pageInit();
   }, []);
@@ -30,7 +29,7 @@ export default function Index() {
     const { top } = await $("#mp-tabs").offset();
     const { windowHeight } = Taro.getSystemInfoSync();
     if (top && windowHeight) {
-      setTabsSwiperHeight(windowHeight - top - 47 - 60);
+      setTabsSwiperHeight(windowHeight - top - 33);
     }
   };
   const concatBtnClick = () => {
@@ -38,6 +37,22 @@ export default function Index() {
       phoneNumber: "15226737806", //仅为示例，并非真实的电话号码
     });
   };
+  const gotoMapPage = () => {
+    Taro.navigateTo({
+      url: `/pages/map/index`,
+      success: function(res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('initMapEvent', {
+          data: {
+            longitude: 116.224219,
+            latitude: 38.177504,
+            title: '沧州志英建材',
+            id:99,
+          }
+        })
+      }
+    });
+  }
   const swiperData = [
     {
       alt: "",
@@ -259,6 +274,16 @@ export default function Index() {
           </Swiper>
         </View>
       </View>
+      <View className="btn-group">
+        <View className="my-btn" onClick={concatBtnClick}>
+          <Image src={require('../../images/concat.png')} className="btn-image" mode="aspectFit"></Image>
+          <View className="text">联系我</View>
+        </View>
+        <View className="my-btn" onClick={gotoMapPage}>
+          <Image src={require('../../images/position.png')} className="btn-image" mode="aspectFit"></Image>
+          <View className="text">查位置</View>
+        </View>
+      </View>
       <View id="mp-tabs">
         <mp-tabs
           tabs={tabsData}
@@ -268,10 +293,10 @@ export default function Index() {
           swiperClass="weui-tabs-swiper"
           swiperItemClass="weui-tabs-swiper-item"
           activeClass="tab-bar-title__selected"
-          tabUnderlineColor="#07c160"
+          tabUnderlineColor="#4096ff"
           tabActiveTextColor="#333333"
           tabInactiveTextColor="#666666"
-          tabBackgroundColor="#f5f5f9"
+          tabBackgroundColor="#fff"
           swipeable
           animation
           duration={500}
@@ -280,7 +305,7 @@ export default function Index() {
           {tabsItemRender()}
         </mp-tabs>
       </View>
-      <View className="btn-group">
+      {/* <View className="btn-group">
           <Button
             type="primary"
             size="mini"
@@ -295,12 +320,11 @@ export default function Index() {
             size="mini"
             plain
             className="concat-btn"
-            onClick={concatBtnClick}
+            onClick={gotoMapPage}
           >
             查看位置
           </Button>
-      </View>
-      <Map longitude={116.224219} latitude={38.177504} />
+      </View> */}
     </View>
   );
 }
